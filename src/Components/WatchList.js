@@ -8,12 +8,15 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import SearchBar from './SearchBar';
 import Row from './Row';
+import Button from '@material-ui/core/Button';
 
 export default class WatchList extends React.Component {
   state = {
     stocks: [],
     search: '',
+    searchFromChild: ''
   }
 
   componentDidMount() {
@@ -27,37 +30,29 @@ export default class WatchList extends React.Component {
       })
   }
 
+  searchCallback = (dataFromChild) => {
+    this.setState({ searchFromChild: dataFromChild })
+  }
+  
   render() {
-    const handleChange = e => {
-        this.setState({ search: e.target.value});
-      };
-    const filteredRows = this.state.stocks.filter(row =>
-        row.name.toLowerCase().includes(this.state.search.toLowerCase())
+    const filteredStocks = this.state.stocks.filter(stock =>
+        stock.name.toLowerCase().includes(this.state.searchFromChild.toLowerCase())
       );
     return (
         <TableContainer component={Paper}>
-        <div className='coin-search'>
-        <form>
-          <input
-            className='coin-input'
-            type='text'
-            onChange={handleChange}
-            placeholder='Search'
-          />
-        </form>
-      </div>
+          <SearchBar callbackFromParent={this.searchCallback}/>
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
               <TableCell />
               <TableCell>Symbol</TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>Price</TableCell>
+              <TableCell><Button variant="contained">Show Current Price</Button></TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-          {filteredRows.map((row) => (
+          {filteredStocks.map((row) => (
               <Row key={row.name} row={row} />
             ))}
           </TableBody>
