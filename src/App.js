@@ -3,6 +3,8 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './Components/Theme'
 import {BrowserRouter, Route, Switch} from "react-router-dom"
 
+import WatchList from './Components/WatchList';
+
 function App() {
   return (
     <div className="App">
@@ -11,7 +13,7 @@ function App() {
       <Header/>
       <Switch>
         <Route exact path="/" component={() => <div>Home</div>} />
-        <Route exact path="/watchList" component={() => <div>Watch List</div>} />
+        <Route exact path="/watchList" component={() => <WatchList/>} />
       </Switch>
         </BrowserRouter>
       </ThemeProvider>
