@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import SearchBar from './SearchBar';
 import Row from './Row';
+import * as symbols from '../api/symbols'
 
 export default class WatchList extends React.Component {
   state = {
@@ -19,14 +20,10 @@ export default class WatchList extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`https://hiring-project-307416.uk.r.appspot.com/api/v1/symbols`, {
-        headers: {
-            'api-key': '8675309-divya'
-          }
+    symbols.getSymbols().then((res) => {
+      console.log("data is: ",res);
+      this.setState({ stocks: res });
     })
-    .then(res => {
-        this.setState({ stocks: res.data });
-     })
   }
 
   searchCallback = (dataFromChild) => {

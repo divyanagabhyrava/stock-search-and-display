@@ -5,14 +5,14 @@ import {BrowserRouter, Route, Switch} from "react-router-dom"
 
 function App() {
   return (
-    <div className="App">
-        <BrowserRouter>
+    <div data-testid="testEle" className="App">
+      <BrowserRouter>
       <Header/>
       <Switch>
         <Route exact path="/" component={() => <Home />} />
         <Route exact path="/watchList" component={() => <WatchList/>} />
       </Switch>
-        </BrowserRouter>
+        </BrowserRouter> 
     </div>
   );
 }
