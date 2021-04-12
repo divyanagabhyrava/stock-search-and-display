@@ -10,7 +10,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import SearchBar from './SearchBar';
 import Row from './Row';
-import Button from '@material-ui/core/Button';
 
 export default class WatchList extends React.Component {
   state = {
@@ -25,9 +24,9 @@ export default class WatchList extends React.Component {
             'api-key': '8675309-divya'
           }
     })
-      .then(res => {
+    .then(res => {
         this.setState({ stocks: res.data });
-      })
+     })
   }
 
   searchCallback = (dataFromChild) => {
@@ -44,16 +43,16 @@ export default class WatchList extends React.Component {
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell />
+              <TableCell/>
               <TableCell>Symbol</TableCell>
               <TableCell>Name</TableCell>
-              <TableCell><Button variant="contained">Show Current Price</Button></TableCell>
+              <TableCell>Price</TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
           {filteredStocks.map((row) => (
-              <Row key={row.name} row={row} />
+              <Row key={row.name} row={row}/>
             ))}
           </TableBody>
         </Table>

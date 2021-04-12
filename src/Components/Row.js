@@ -15,17 +15,24 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { useState, useEffect } from 'react';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
+import axiosRetry from 'axios-retry';
 
 function Row(props) {
-    const [details, setDetails] = useState(null);
+    axiosRetry(axios, { retries: 3 });
 
+    const [details, setDetails] = useState(null);
     const useRowStyles = makeStyles({
-        root: {
-          '& > *': {
-            borderBottom: 'unset',
-          },
+      root: {
+        '& > *': {
+          borderBottom: 'unset',
         },
-      });
+      },
+    });
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
+    const [trigger, setTrigger] = React.useState(true);
+    const [price, setPrice] = React.useState('');
+    const classes = useRowStyles();
 
       const StyledTableCell = withStyles((theme) => ({
         head: {
@@ -45,21 +52,44 @@ function Row(props) {
         },
       }))(TableRow);
 
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-    const classes = useRowStyles();
-
-    const fetchData = async () => {
+      const fetchData = async () => {
         setOpen(!open)
         const response = await axios.get(
-          'https://hiring-project-307416.uk.r.appspot.com/api/v1/data/AAPL', {
+          `https://hiring-project-307416.uk.r.appspot.com/api/v1/data//${row.symbol}`, {
             headers: {
                 'api-key': '8675309-divya'
               }
           }
         );
         setDetails(response.data);
-    };
+      };
+
+      useEffect(() => {
+        async function fetchPrice() {
+          if(trigger) {
+            console.log("[Row]-api call to get price of a stock")
+            try {
+              let result = await axios.get(`https://hiring-project-307416.uk.r.appspot.com/api/v1/price/${row.symbol}`, {
+                headers: {
+                'api-key': '8675309-divya'
+              }  
+              })
+            console.log('Result is :', result);
+            setPrice(result.data.price)
+            } 
+            catch (e) {
+              if(e == 'Error: Request failed with status code 429')
+              {
+                console.log('Maximum limit reached-unable to get the stock price at this time');
+                setPrice('Please try after a minute')
+              }
+            console.log('Error is :',e);
+            }
+          }
+        }
+    
+        fetchPrice()
+      }, [trigger])
    
     return (
       <React.Fragment>
@@ -71,6 +101,7 @@ function Row(props) {
           </StyledTableCell>
           <StyledTableCell >{row.symbol}</StyledTableCell>
           <StyledTableCell component="th" scope="row">{row.name}</StyledTableCell>
+          <StyledTableCell component="th" scope="row">{price}</StyledTableCell>
           <StyledTableCell></StyledTableCell>
           <StyledTableCell>
             <IconButton color="primary" aria-label="add to shopping cart">
