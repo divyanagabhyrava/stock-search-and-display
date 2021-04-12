@@ -55,7 +55,7 @@ function Row(props) {
       const fetchData = async () => {
         setOpen(!open)
         const response = await axios.get(
-          `https://hiring-project-307416.uk.r.appspot.com/api/v1/data//${row.symbol}`, {
+          `https://hiring-project-307416.uk.r.appspot.com/api/v1/data/${row.symbol}`, {
             headers: {
                 'api-key': '8675309-divya'
               }
