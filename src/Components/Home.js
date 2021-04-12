@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { mainListItems, secondaryListItems } from './Home/listItems';
 import Chart from './Home/Chart';
 import Balance from './Home/Balance';
@@ -20,11 +21,9 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'©'}
-      <Link color="inherit" href="https://material-ui.com/">
-        
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
+      <Link color="inherit" href="https://www.freedomfinancialnetwork.com/">
+        <a>{new Date().getFullYear()}</a>
+      </Link>
     </Typography>
   );
 }
@@ -113,11 +112,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const [clicked, setClicked] = React.useState(false);
+
+  const handleDrawer = () => {
+    setClicked(!clicked);
+    setOpen(!open);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -131,8 +130,8 @@ export default function Dashboard() {
         open={open}
       >
         <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
+          <IconButton onClick={handleDrawer}>
+            {clicked ? <ChevronRightIcon /> : <ChevronLeftIcon /> }
           </IconButton>
         </div>
         <Divider />
@@ -168,7 +167,7 @@ export default function Dashboard() {
         
         <Box pt={4}>
             <Copyright />
-          </Box>
+        </Box>
       </main>
     </div>
   );

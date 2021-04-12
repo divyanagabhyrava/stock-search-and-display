@@ -42,7 +42,7 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <div>
-    <ListSubheader inset>Saved Searches</ListSubheader>
+    <ListSubheader>Saved Searches</ListSubheader>
     <ListItem button>
       <ListItemIcon>
         <FavoriteIcon />
